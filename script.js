@@ -3,7 +3,7 @@
 // Get references to the #generate element
 var generateBtn = document.querySelector("#generate");
 
-let upperCase = [
+const upperCase = [
   "A",
   "B",
   "C",
@@ -32,7 +32,7 @@ let upperCase = [
   "Z",
 ];
 
-let lowerCase = [
+const lowerCase = [
   "a",
   "b",
   "c",
@@ -61,9 +61,9 @@ let lowerCase = [
   "z",
 ];
 
-let numeric = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+const numeric = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
-let specialCharacters = [
+const specialCharacters = [
   "?",
   "!",
   ">",
@@ -94,6 +94,18 @@ let specialCharacters = [
   "`",
 ];
 
+var specialCharSelection;
+var upperCaseSelection;
+var lowerCaseSelection;
+var numberSelection;
+var lengthPrompt;
+var specialCharactersPrompt;
+var upperCasePrompt;
+var lowerCasePrompt;
+var numericPrompt;
+var count = 0;
+var password = "";
+
 // Write password to the #password input
 function writePassword() {
   var password = generatePassword();
@@ -109,33 +121,91 @@ generateBtn.addEventListener("click", function myFunction() {
 });
 
 function generatePassword() {
-  var lengthPrompt = prompt("How many characters?");
-  console.log(length);
+  lengthPrompt = prompt("How many characters?");
   if (lengthPrompt < 8) {
     alert("Password needs to have at least 8 characters");
   } else if (lengthPrompt > 128) {
     alert("Password needs to be less the 128 characters");
   }
-  var specialCharactersPrompt = confirm(
+
+  specialCharactersPrompt = confirm(
     "Would you like to include special characters?"
   );
-  console.log(specialCharactersPrompt);
   if (specialCharactersPrompt) {
-    var specialCharIndex = Math.floor(
-      this.specialCharacters.length * Math.random()
-    );
+    count++;
+    var specialCharIndex = Math.floor(specialCharacters.length * Math.random());
+    specialCharSelection = specialCharacters[specialCharIndex];
+    password = password.concat(specialCharSelection);
+    console.log(password);
   }
-  var numericPrompt = confirm("Would you like any numbers?");
-  console.log(numeric);
-  var upperCasePrompt = confirm(
-    "Would you like to include special characters?"
-  );
-  console.log(upperCase);
-  var lowerCasePrompt = confirm("Would you like any numbers?");
-  console.log(lowerCase);
+
+  numericPrompt = confirm("Would you like any numbers?");
+  if (numericPrompt) {
+    count++;
+    var numericIndex = Math.floor(numeric.length * Math.random());
+    numberSelection = numeric[numericIndex];
+    password = password.concat(numberSelection);
+    console.log(password);
+  }
+
+  upperCasePrompt = confirm("Would you like to include upper case letters?");
+  if (upperCasePrompt) {
+    count++;
+    var upperCaseIndex = Math.floor(numeric.length * Math.random());
+    upperCaseSelection = upperCase[upperCaseIndex];
+    password = password.concat(upperCaseSelection);
+    console.log(password);
+  }
+
+  lowerCasePrompt = confirm("Would you like to include lower case letters?");
+  if (lowerCasePrompt) {
+    count++;
+    var lowerCaseIndex = Math.floor(numeric.length * Math.random());
+    lowerCaseSelection = lowerCase[lowerCaseIndex];
+    password = password.concat(lowerCaseSelection);
+    console.log(password);
+  }
+
+  if (
+    !specialCharactersPrompt &&
+    !numericPrompt &&
+    !upperCasePrompt &&
+    !lowerCasePrompt
+  ) {
+    alert(
+      "You must select at least one of the following: Special Characters, Numeric Characters, Upper Case Characters, or Lower Case Characters"
+    );
+    return "Please Retry Generating a Password";
+  }
+
+  return fillRestOfPassword();
 }
 
-var computerChoice = options[Math.floor(options.length * Math.random())];
+function fillRestOfPassword() {
+  console.log(count);
+  var numberOfCharactersNeeded = lengthPrompt - count;
+  var characterArray = [];
+  if (specialCharactersPrompt) {
+    characterArray = characterArray.concat(specialCharacters);
+  }
+  if (numericPrompt) {
+    characterArray = characterArray.concat(numeric);
+  }
+  if (upperCasePrompt) {
+    characterArray = characterArray.concat(upperCase);
+  }
+  if (lowerCasePrompt) {
+    characterArray = characterArray.concat(lowerCase);
+  }
+
+  for (i = 0; i < numberOfCharactersNeeded; i++) {
+    var randomIndex = Math.floor(characterArray.length * Math.random());
+    var randomCharacter = characterArray[randomIndex];
+    password = password.concat(randomCharacter);
+    console.log(password);
+  }
+  return password;
+}
 
 // //From internet
 //  function genPassword() {
