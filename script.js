@@ -116,11 +116,14 @@ generateBtn.addEventListener("click", function myFunction() {
 });
 
 function generatePassword() {
+  password = "";
   lengthPrompt = prompt("How many characters?");
   if (lengthPrompt < 8) {
     alert("Password needs to have at least 8 characters");
+    return;
   } else if (lengthPrompt > 128) {
     alert("Password needs to be less the 128 characters");
+    return;
   }
 
   specialCharactersPrompt = confirm(
